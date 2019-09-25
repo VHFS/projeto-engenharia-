@@ -72,7 +72,7 @@ public class TelaListaFavoritos extends javax.swing.JInternalFrame {
                 .addGap(0, 10, Short.MAX_VALUE))
         );
 
-        Cancelar.setText("Cancelar");
+        Cancelar.setText("Fechar");
         Cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelarActionPerformed(evt);
