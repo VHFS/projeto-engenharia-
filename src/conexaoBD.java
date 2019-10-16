@@ -1,5 +1,12 @@
 
+import java.awt.HeadlessException;
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -10,23 +17,29 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author aluno
+ * @author aluno ssasr
  */
+
+
+
 public class conexaoBD {
-    public static void Conexao(String args[]) {
-String bd, usuario, senha, endereco, porta;
-bd = "biblioteca";
-usuario = "root";
-senha = "";
-endereco = "localhost";
-porta = "3306";
-try {
-DriverManager.getConnection(
-"jdbc:mysql://localhost:3306/biblioteca" , "root" ,"");
-JOptionPane.showMessageDialog(null, "Conectado");
-} catch (Exception ex) {
-JOptionPane.showMessageDialog(null, "Não conectado\n" + ex.getMessage());
+
+    private final Connection connection;
+    
+    public conexaoBD() throws ClassNotFoundException, SQLException{
+        Class.forName("com.mysql.jdbc.Driver"); 
+    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/biblioteca" , "root" ,"");
+    System.out.println("Conectado");
+    }
+    
+         public static void main(String[] args) {
+             try {
+                 new conexaoBD();
+             } catch (Exception e){
+                 System.out.println("Não conectado");
 }
 }
   
 }
+
+
