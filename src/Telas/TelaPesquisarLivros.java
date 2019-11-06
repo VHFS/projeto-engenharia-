@@ -5,7 +5,14 @@
  */
 package Telas;
 
-import javax.swing.JOptionPane;
+
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -192,7 +199,30 @@ public class TelaPesquisarLivros extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_CancelarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     JOptionPane.showMessageDialog(this, "Selecione um filtro e preencha o campo de pesquisa antes !");     // TODO add your handling code here:
+     
+        try {
+            ConexaoBD bd = new ConexaoBD();
+            
+            Connection con = bd.getConnection();
+            
+             Statement st = con.createStatement();
+             
+            
+            ResultSet rs = st.executeQuery("select * from livro");
+            
+             while (rs.next())
+             {
+                 System.out.println(rs.getInt("COD_LIVRO") + " - " + rs.getString("TITULO"));
+                 
+             }
+            
+            
+            //JOptionPane.showMessageDialog(this, "Selecione um filtro e preencha o campo de pesquisa antes !");     // TODO add your handling code here:
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaPesquisarLivros.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaPesquisarLivros.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void BuscarLivroFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_BuscarLivroFocusLost
@@ -206,7 +236,7 @@ public class TelaPesquisarLivros extends javax.swing.JInternalFrame {
         texto = texto.toUpperCase();
         BuscarLivro.setText(texto);
     }
-
+       
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton Autor;
     private javax.swing.JTextField BuscarLivro;
@@ -221,3 +251,4 @@ public class TelaPesquisarLivros extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }
+

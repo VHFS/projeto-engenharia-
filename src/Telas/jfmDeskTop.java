@@ -126,15 +126,20 @@ public class jfmDeskTop extends javax.swing.JFrame {
 
     private void CadastroLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CadastroLivroActionPerformed
         // TODO add your handling code here:                                
-        TelaPesquisarLivros tela;
+        TelaCadastroLivro tela = new TelaCadastroLivro();
         
-        tela = new TelaPesquisarLivros();
         tela.setVisible(true);
         Desktop.add (tela);
     }//GEN-LAST:event_CadastroLivroActionPerformed
 
     private void PesquisarLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PesquisarLivroActionPerformed
         // TODO add your handling code here:
+        
+              TelaPesquisarLivros tela = new TelaPesquisarLivros();
+        
+        tela.setVisible(true);
+        Desktop.add (tela);
+        
     }//GEN-LAST:event_PesquisarLivroActionPerformed
 
     private void ListaDeFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListaDeFavoritosActionPerformed
@@ -143,10 +148,9 @@ public class jfmDeskTop extends javax.swing.JFrame {
 
     private void MinhasReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MinhasReservasActionPerformed
 
-         TelaMinhasReservas tela;
+         TelaMinhasReservas tela= new TelaMinhasReservas();
         
-        tela = new TelaMinhasReservas();
-        tela.setVisible(true);
+          tela.setVisible(true);
         Desktop.add (tela);
 // TODO add your handling code here:
     }//GEN-LAST:event_MinhasReservasActionPerformed
