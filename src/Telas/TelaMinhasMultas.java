@@ -5,11 +5,21 @@
  */
 package Telas;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author victor.netto
  */
 public class TelaMinhasMultas extends javax.swing.JFrame {
+    private Object BuscarLivro;
 
     /**
      * Creates new form TelaMinhasMultas
@@ -28,27 +38,15 @@ public class TelaMinhasMultas extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton2 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        LivrosReservado = new javax.swing.JTable();
         Cancelar = new javax.swing.JButton();
         TituloTela = new javax.swing.JLabel();
+        VerMultas = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         jButton2.setText("jButton2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        LivrosReservado.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(LivrosReservado);
 
         Cancelar.setText("Cancelar");
         Cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -60,35 +58,62 @@ public class TelaMinhasMultas extends javax.swing.JFrame {
         TituloTela.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         TituloTela.setText("Minhas Multas");
 
+        VerMultas.setText("Ver Multas");
+        VerMultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VerMultasActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "COD_MULTA", "COD_USUARIO", "VALOR", "STATUS"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Cancelar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(VerMultas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Cancelar)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(162, 162, 162)
                 .addComponent(TituloTela, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(129, 129, 129))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addContainerGap()
                 .addComponent(TituloTela)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                .addComponent(Cancelar)
-                .addContainerGap())
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(VerMultas)
+                    .addComponent(Cancelar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -98,6 +123,40 @@ public class TelaMinhasMultas extends javax.swing.JFrame {
         dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_CancelarActionPerformed
+
+    private void VerMultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerMultasActionPerformed
+       try {
+            ConexaoBD bd = new ConexaoBD();
+            
+            Connection con = bd.getConnection();
+            
+             Statement st = con.createStatement();
+             
+
+            ResultSet rs = st.executeQuery("select * from multas");
+            DefaultTableModel tabela = (DefaultTableModel) jTable1.getModel();
+            int x = 0;
+             while (rs.next())
+             {
+                 Vector linha = new Vector();
+                 linha.add("");
+                 tabela.addRow(linha);
+
+                tabela.setValueAt(rs.getInt("COD_MULTA"), x, 0);
+                tabela.setValueAt(rs.getInt("COD_USUARIO"), x, 1);
+                tabela.setValueAt(rs.getInt("VALOR"), x, 2);
+                tabela.setValueAt(rs.getInt("STATUSPAGAMENTO"), x++, 3);
+             }
+            
+            
+            //JOptionPane.showMessageDialog(this, "Selecione um filtro e preencha o campo de pesquisa antes !");     // TODO add your handling code here:
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TelaPesquisarLivros.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaPesquisarLivros.class.getName()).log(Level.SEVERE, null, ex);
+    }                                        
+            //JOptionPane.showMessageDialog(this, "Selecione um filtro e preencha o campo de pesquisa antes !");     // TODO add your handling code her
+    }//GEN-LAST:event_VerMultasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -136,9 +195,10 @@ public class TelaMinhasMultas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cancelar;
-    private javax.swing.JTable LivrosReservado;
     private javax.swing.JLabel TituloTela;
+    private javax.swing.JButton VerMultas;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
